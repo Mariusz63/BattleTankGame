@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4856545790818039714}
   - component: {fileID: 4195080102938030980}
   - component: {fileID: 5645914756213110085}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,5 +126,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
   x: 0
-  y: 0
+  z: 0
+  type: 0
   walkable: 1

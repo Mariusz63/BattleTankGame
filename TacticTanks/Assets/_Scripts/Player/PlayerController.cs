@@ -1,20 +1,22 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
 
     public PlayerActionMode currentMode = PlayerActionMode.None;
-
     public Unit selectedUnit;
 
     public MoveRangeVisual moveRangeVisual;
     public AttackRangeVisual attackRangeVisual;
+    public GameObject UnitActionPanel;
 
     void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
 
     void Update()
@@ -23,69 +25,87 @@ public class PlayerController : MonoBehaviour
             HandleClick();
     }
 
+    // ================= SELECTION =================
+
     public void SelectUnit(Unit unit)
     {
-        ClearSelection();
+        if (selectedUnit == unit)
+            return;
+
+        ClearSelection(false);
+
         selectedUnit = unit;
+        UnitActionPanel.SetActive(true);
     }
+
+    public void ClearSelection(bool hideUI = true)
+    {
+        moveRangeVisual.Clear();
+        attackRangeVisual.Clear();
+
+        selectedUnit = null;
+        currentMode = PlayerActionMode.None;
+
+        if (hideUI)
+            UnitActionPanel.SetActive(false);
+    }
+
+    // ================= ACTION MODES =================
 
     public void SetMoveMode()
     {
+        if (selectedUnit == null) return;
+
         currentMode = PlayerActionMode.Move;
+        attackRangeVisual.Clear();
         moveRangeVisual.Show(selectedUnit);
     }
 
     public void SetAttackMode()
     {
+        if (selectedUnit == null) return;
+
         currentMode = PlayerActionMode.Attack;
+        moveRangeVisual.Clear();
         attackRangeVisual.Show(selectedUnit);
     }
 
-    public void ClearSelection()
-    {
-        moveRangeVisual.Clear();
-        attackRangeVisual.Clear();
-        selectedUnit = null;
-        currentMode = PlayerActionMode.None;
-    }
+    // ================= INPUT =================
 
     void HandleClick()
     {
-        Console.WriteLine("HandleClick called");
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit))
+        if (!Physics.Raycast(ray, out RaycastHit hit, 100f))
             return;
 
-        // Klik na TANKA
-        if (hit.collider.CompareTag("Tank"))
+        // UNIT (Tank / Enemy)
+        Unit unit = hit.collider.GetComponent<Unit>();
+        if (unit != null)
         {
-            Unit unit = hit.collider.GetComponent<Unit>();
-            if (unit != null)
+            // swój tank
+            if (hit.collider.CompareTag("Tank"))
             {
                 SelectUnit(unit);
                 return;
             }
+
+            // wróg
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                HandleEnemyClick(unit);
+                return;
+            }
         }
 
-        // Klik na Tile
+        // TILE
         Tile tile = hit.collider.GetComponent<Tile>();
         if (tile != null)
         {
             HandleTileClick(tile);
-            return;
-        }
-
-        // Klik na wroga
-        if (hit.collider.CompareTag("Enemy"))
-        {
-            Unit enemy = hit.collider.GetComponent<Unit>();
-            if (enemy != null)
-            {
-                HandleEnemyClick(enemy);
-            }
         }
     }
 
+    // ================= HANDLERS =================
 
     void HandleTileClick(Tile tile)
     {

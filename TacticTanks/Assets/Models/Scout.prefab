@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1275528341288648585}
   - component: {fileID: 1226208074435249709}
   - component: {fileID: 3810457544040798288}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,8 +123,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 443447842380651766}
+  - component: {fileID: -4127022397268116566}
   - component: {fileID: -7770556966157065643}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Scout
   m_TagString: Tank
   m_Icon: {fileID: 0}
@@ -147,6 +148,27 @@ Transform:
   - {fileID: 4769218207289184648}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &-4127022397268116566
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020094699427359467}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-7770556966157065643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +197,7 @@ GameObject:
   - component: {fileID: 8380507438453953260}
   - component: {fileID: 3878799004059391047}
   - component: {fileID: 2347559831710221750}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}

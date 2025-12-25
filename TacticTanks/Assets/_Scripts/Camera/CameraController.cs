@@ -16,6 +16,12 @@ public class CameraController : MonoBehaviour
     [Header("Rotation")]
     public float rotationSpeed = 100f;
 
+    private void Awake()
+    {
+        panLimitX = new Vector2(0, GridManager.Instance.width);
+        panLimitZ = new Vector2(0, GridManager.Instance.height);
+    }
+
     void Update()
     {
         HandleMovement();
