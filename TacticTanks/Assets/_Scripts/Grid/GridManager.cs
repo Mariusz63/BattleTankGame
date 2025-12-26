@@ -30,11 +30,11 @@ public class GridManager : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
-    }
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
 
-    void Start()
-    {
         GenerateGrid();
     }
 
@@ -120,11 +120,18 @@ public class GridManager : MonoBehaviour
 
     public Tile GetTile(int x, int z)
     {
+        if (grid == null)
+        {
+            Debug.LogError("Grid not initialized!");
+            return null;
+        }
+
         if (x < 0 || z < 0 || x >= width || z >= height)
             return null;
 
         return grid[x, z];
     }
+
 
     public bool IsTileOccupied(int x, int z)
     {
@@ -135,4 +142,14 @@ public class GridManager : MonoBehaviour
         }
         return false;
     }
+
+    public void ClearTileAndMakeGrass(int x, int z)
+    {
+        Tile tile = GetTile(x, z);
+        if (tile == null) return;
+
+        tile.ClearContent();
+        tile.SetTileType(TileType.Grass);
+    }
+
 }

@@ -5,11 +5,15 @@ public class Tile : MonoBehaviour
     public int x;
     public int z;
 
-    public TileType type;
+    public TileType tileType;
     public bool walkable;
 
     private Renderer rend;
     private Material baseMaterial;
+
+    [Header("Visuals")]
+    public GameObject content; // np. budynek, drzewo
+
 
     void Awake()
     {
@@ -20,7 +24,7 @@ public class Tile : MonoBehaviour
     {
         this.x = x;
         this.z = z;
-        this.type = type;
+        this.tileType = type;
         this.walkable = walkable;
 
         baseMaterial = material;
@@ -35,5 +39,32 @@ public class Tile : MonoBehaviour
     public void ResetMaterial()
     {
         rend.material = baseMaterial;
+    }
+
+    public void SetTileType(TileType newType)
+    {
+        tileType = newType;
+
+        switch (tileType)
+        {
+            case TileType.Grass:
+                walkable = true;
+                break;
+
+            case TileType.Obstacle:
+            case TileType.Building:
+            case TileType.Water:
+                walkable = false;
+                break;
+        }
+    }
+
+    public void ClearContent()
+    {
+        if (content != null)
+        {
+            Destroy(content);
+            content = null;
+        }
     }
 }
